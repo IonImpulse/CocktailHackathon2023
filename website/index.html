@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>OVERFLOW - Drink Generator</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div id="main-grid">
+            <div id="outer">
+                <!-- This div is important! It lets us specify margin-left as percentage later on. -->
+                <div>
+                    <div id="loop"><div id="content">OVERFLOW&nbsp;</div></div>
+                </div>
+            </div>
+            
+            <div id="step1" class="step">
+                <h2>1: Pick Your Poison</h2>
+                <div class="button-container">
+
+                </div>
+            </div>
+
+            <div id="step2" class="step hidden">
+                <h2>2: Select Drink Complexity</h2>
+                <div class="button-container">
+
+                </div> 
+            </div>
+
+            <div id="step3" class="step hidden">
+                <h2>3: Generating Drink...</h2>
+                <div id="loading-text">
+
+                </div>
+            </div>
+
+            <div id="step4" class="step hidden">
+                <h2>4: Down The Hatch</h2>
+                <div id="drink-result">
+                    <div id="drink-image-container">
+                        <img id="drink-image" src="" alt="Drink Image">
+                    </div>
+                    <div id="drink-info">
+                        <h3 id="drink-name">...</h3>
+                        <p id="drink-glass">...</p>
+                        <p id="drink-ingredients">...</p>
+                        <p id="drink-instructions">...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fader">
+            <h1 class="title">OVERFLOW</h1>
+            <h2>COMPUTATIONALLY <span class="blink">MIXED</span> BEVERAGES</h2>
+            <button onclick="hideFader()">ENTER</button>
+        </div>
+        
+        <script src="/scripts/constants.js"></script>
+        <script src="/scripts/app.js"></script>
+    </body>
+</html>

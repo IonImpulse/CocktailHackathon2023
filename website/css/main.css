@@ -1,0 +1,235 @@
+/*
+Import local fonts
+*/
+@font-face {
+    font-family: 'BOSTON CAPS';
+    src: url('BOSTON\ CAPS.ttf');
+}
+
+@font-face {
+    font-family: 'Space Crusaders';
+    src: url('Space\ Crusaders.ttf');
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont_slnt\,wght.ttf');
+}
+
+:root {
+    --theme-color-1: #02090e;
+    --theme-color-2: #fde000;
+    --theme-color-3: #37e5d4;
+    --theme-color-4: #112022;
+    --theme-color-5: #1c1f0c;
+    --theme-color-6: #25a391;
+}
+
+.hidden {
+    display: none !important;
+}
+
+body {
+    margin: unset;
+}
+
+body * {
+    font-family: 'Boston Caps', sans-serif;
+    color: var(--theme-color-2);
+    transition: border 0.1s, background-color 0.1s, color 0.1s;
+}
+
+h1 {
+    font-size: 5vh;
+    font-family: 'Space Crusaders', sans-serif;
+    color: var(--theme-color-3);
+    margin: unset;
+}
+
+h1.title {
+    font-size: 15vh;
+}
+
+h2, h2 * {
+    font-size: 5vh;
+    font-family: 'Boston Caps', sans-serif;
+    color: var(--theme-color-2);
+    margin-top: 2vh;
+    margin-bottom: 5vh;
+    transition: unset;
+}
+
+@keyframes blink {
+    50% {
+      opacity: 0.0;
+    }
+  }
+  .blink {
+    animation: blink .2s step-start 1s 2;
+  }
+
+button {
+    background-color: var(--theme-color-4);
+    border: 2px solid var(--theme-color-5);
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    -ms-transform: skewX(-20deg);
+    -webkit-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+}
+
+button:hover {
+    border: 2px solid var(--theme-color-2);
+}
+
+button:active {
+    background-color: var(--theme-color-2);
+    color: var(--theme-color-1);
+}
+
+#main-grid {
+    background-color: var(--theme-color-4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-areas: "logo" "content";
+    grid-template-rows: 10vh 90vh;
+}
+
+#fader {
+    background-color: var(--theme-color-1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.slide-out {
+    animation: slide-out 1s ease-in-out;
+}
+
+.slide-in {
+    animation: slide-in 1s ease-in-out;
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-150vh);
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateY(-150vh);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+#outer {
+    overflow: hidden;
+}
+
+#outer div {
+    display: inline-block;
+}
+
+#loop {
+    white-space: nowrap;
+    animation: loop-anim 5s linear infinite;
+}
+
+#content {
+    font-size: 5vh;
+    font-family: 'Space Crusaders', sans-serif;
+    color: var(--theme-color-3);
+    margin: unset;
+}
+
+@keyframes loop-anim {
+    0% {
+        margin-left: 0;
+    }
+    100% {
+        margin-left: -50% /* This works because of the div between "outer" and "loop" */
+    }
+}
+
+.step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+}
+
+#drink-result {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: 2vw;
+}
+
+#drink-image {
+    height: 40vh;
+    border-radius: 1vw;
+}
+
+#drink-name {
+    font-size: 4vh;
+    font-family: 'Space Crusaders', sans-serif;
+    color: white;
+    margin: unset;
+    background-color: var(--theme-color-1);
+    padding: 1vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
+    -ms-transform: skewX(-20deg);
+    -webkit-transform: skewX(-20deg);
+    transform: skewX(-20deg);
+}
+
+#drink-glass, #drink-ingredients, #drink-instructions {
+    font-size: 2vh;
+    margin: unset;
+    background-color: var(--theme-color-1);
+    padding: 1vh;
+    color: white;
+    font-family: "Inter", serif;
+    font-weight: bold;
+}
+
+#drink-info {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+#loading-text {
+    font-size: 3vh;
+    font-family: 'Space Crusaders', sans-serif;
+    color: var(--theme-color-3);
+    margin: unset;
+    background-color: var(--theme-color-1);
+    padding: 1vh;
+    padding-left: 2vh;
+}
