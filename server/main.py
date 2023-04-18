@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # mount static files
     if "--prod" in sys.argv:
         # Production mode
-        uvicorn.run("main:app", host="0.0.0.0", port=8000, log_level="info", reload=False,
+        uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info", reload=False,
                     workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
