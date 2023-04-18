@@ -16,9 +16,6 @@ SSL_CERT_PERMKEY = "/etc/letsencrypt/live/overflow.bar/fullchain.pem"
 
 app = FastAPI()
 
-# HTTP server to redirect to HTTPS
-http_app = FastAPI()
-
 graph = nx.read_gexf('ingredient_graph.gexf')
 
 def generate_drink_from_ingredient(ingredient_name, graph, num_ingredients=3):
@@ -85,27 +82,8 @@ if __name__ == "__main__":
     # mount static files
     if "--prod" in sys.argv:
         # Production mode
-        # Add redirect from http to https
-        from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
-        import multiprocessing
-        http_app.add_middleware(HTTPSRedirectMiddleware)
-
-        def run_http():
-            uvicorn.run(http_app, host="0.0.0.0", port=80, log_level="info", reload=False)
-        
-        def run_https():
-            uvicorn.run("main:app", host="0.0.0.0", port=443, log_level="info", reload=False,
+        uvicorn.run("main:app", host="0.0.0.0", port=8000, log_level="info", reload=False,
                     workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
-            
-        p1 = multiprocessing.Process(target=run_http)
-        p2 = multiprocessing.Process(target=run_https)
-
-        p1.start()
-        p2.start()
-
-        p1.join()
-        p2.join()
-
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
                     log_level="info", reload=True)
