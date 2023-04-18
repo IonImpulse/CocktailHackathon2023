@@ -16,6 +16,9 @@ SSL_CERT_PERMKEY = "/etc/letsencrypt/live/overflow.bar/fullchain.pem"
 
 app = FastAPI()
 
+# HTTP server to redirect to HTTPS
+http_app = FastAPI()
+
 graph = nx.read_gexf('ingredient_graph.gexf')
 
 def generate_drink_from_ingredient(ingredient_name, graph, num_ingredients=3):
@@ -84,25 +87,25 @@ if __name__ == "__main__":
         # Production mode
         # Add redirect from http to https
         from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
-        app.add_middleware(HTTPSRedirectMiddleware)
+        import multiprocessing
+        http_app.add_middleware(HTTPSRedirectMiddleware)
 
-        # Add SSL
-        from starlette.middleware import Middleware
-        from starlette.middleware.trustedhost import TrustedHostMiddleware
-        from starlette.middleware.gzip import GZipMiddleware
-        from starlette.middleware.cors import CORSMiddleware
-
-        middleware = [
-            Middleware(TrustedHostMiddleware, allowed_hosts=["overflow.bar"]),
-            Middleware(GZipMiddleware, minimum_size=1000),
-            Middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
-        ]
-
-        for m in middleware:
-            app.add_middleware(m)
-
-        uvicorn.run("main:app", host="0.0.0.0", port=443, log_level="info", reload=False,
+        def run_http():
+            uvicorn.run(http_app, host="0.0.0.0", port=80, log_level="info", reload=False)
+        
+        def run_https():
+            uvicorn.run("main:app", host="0.0.0.0", port=443, log_level="info", reload=False,
                     workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
+            
+        p1 = multiprocessing.Process(target=run_http)
+        p2 = multiprocessing.Process(target=run_https)
+
+        p1.start()
+        p2.start()
+
+        p1.join()
+        p2.join()
+
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
                     log_level="info", reload=True)
