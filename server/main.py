@@ -82,8 +82,24 @@ if __name__ == "__main__":
     # mount static files
     if "--prod" in sys.argv:
         # Production mode
+        # Add redirect from http to https
+        from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
+        app.add_middleware(HTTPSRedirectMiddleware)
+
+        # Add SSL
+        from starlette.middleware import Middleware
+        from starlette.middleware.trustedhost import TrustedHostMiddleware
+        from starlette.middleware.gzip import GZipMiddleware
+        from starlette.middleware.cors import CORSMiddleware
+
+        middleware = [
+            Middleware(TrustedHostMiddleware, allowed_hosts=["overflow.bar"]),
+            Middleware(GZipMiddleware, minimum_size=1000),
+            Middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+        ]
+
         uvicorn.run("main:app", host="0.0.0.0", port=443, log_level="info", reload=False,
-                    workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
+                    workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY, middleware=middleware)
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
                     log_level="info", reload=True)
