@@ -11,6 +11,8 @@ from fastapi import APIRouter, HTTPException, Request
 openai.organization = "org-d9J851UTnhskutiYjlc1UV2U"
 openai.api_key = config.OPEN_AI_KEY
 MODEL = "text-davinci-003"
+SSL_CERT_PRIVKEY = "/etc/letsencrypt/live/overflow.bar/privkey.pem"
+SSL_CERT_PERMKEY = "/etc/letsencrypt/live/overflow.bar/fullchain.pem"
 
 app = FastAPI()
 
@@ -80,7 +82,7 @@ if __name__ == "__main__":
     # mount static files
     if "--prod" in sys.argv:
         # Production mode
-        uvicorn.run("main:app", host="0.0.0.0", port=8433, log_level="info", reload=False,
+        uvicorn.run("main:app", host="0.0.0.0", port=433, log_level="info", reload=False,
                     workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
