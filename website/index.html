@@ -32,14 +32,14 @@
             </div>
 
             <div id="step2" class="step hidden">
-                <h2>2: Select Drink Complexity</h2>
+                <h2>2: How Complex?</h2>
                 <div class="button-container">
 
                 </div> 
             </div>
 
             <div id="step3" class="step hidden">
-                <h2>3: Generating Drink...</h2>
+                <h2>3: Now We Wait</h2>
                 <div id="loading-text">
 
                 </div>
@@ -59,14 +59,20 @@
                     </div>
                 </div>
 
-                <button onclick="setStep(1)">ANOTHER ROUND</button>
+                <div id="share-buttons" class="buttons-cont">
+                    <h3>Share on:</h3>
+                    <button id="share-twitter" class="share-button" onclick="shareTwitter()" aria-label="share on twitter"></button>
+                    <button id="share-discord" class="share-button" onclick="shareDiscord()" aria-label="share on discord"></button>
+                </div>
+
+                <button onclick="setStep(1)" class="big">ANOTHER ROUND</button>
             </div>
         </div>
 
         <div id="fader">
             <h1 class="title">OVERFLOW</h1>
             <h2>COMPUTATIONALLY <span class="blink">MIXED</span> BEVERAGES</h2>
-            <button onclick="hideFader()">ENTER</button>
+            <button onclick="hideFader()" class="big">ENTER</button>
         </div>
         
         <script src="/scripts/constants.js"></script>

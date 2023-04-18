@@ -3,6 +3,7 @@ API_ENDPOINT = "api/v1/generate_drink/"
 var state = {
   base_ingredient: null,
   num_extra: 1,
+  drink: null,
 }
 
 /*
@@ -30,11 +31,13 @@ async function getDrink(base_ingredient, num_extra) {
 async function generateDrink() {
   const drink = await getDrink(state.base_ingredient, state.num_extra);
 
+  state.drink = drink;
+
   document.getElementById("drink-image").src = drink.url;
   document.getElementById("drink-name").innerHTML = drink.name;
   let glass = drink.glass;
 
-  if (!glass.includes("glass")) {
+  if (!glass.toLowerCase().includes("glass")) {
     glass += " glass";
   }
 
@@ -104,6 +107,8 @@ function generateButtons() {
 function setStep(step) {
   let steps = document.getElementsByClassName("step");
   for (let i = 0; i < steps.length; i++) {
+    document.getElementById("outer").classList.add("down");
+
     steps[i].classList.remove("slide-in");
     steps[i].classList.remove("slide-out");
 
@@ -111,6 +116,7 @@ function setStep(step) {
 
     setTimeout(function () {
       steps[i].classList.add("hidden");
+      document.getElementById("outer").classList.remove("down");
     }, 900);
 
       
@@ -143,6 +149,37 @@ function setupScroller() {
   let el = outer.querySelector('#loop');
   el.innerHTML = el.innerHTML + el.innerHTML;
 }
+
+async function shareTwitter() {
+  // Using the state.drink object, create a tweet with the drink.url image, drink name, and ingredients
+  let tweet = `I just made a ${state.drink.name} with ${Object.keys(state.drink.ingredients).map((key) => {
+    return `${key.toUpperCase()}`
+  }).join(", ")}! Created using OVERFLOW.bar. ${state.drink.url}`;
+
+  let url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweet)}`;
+
+  window.open(url, "_blank");
+}
+
+async function shareDiscord() {
+  // Using the state.drink object, create a discord message with the drink.url image, drink name, and ingredients
+  // on discord
+
+  let glass = state.drink.glass;
+
+  if (!glass.toLowerCase().includes("glass")) {
+    glass += " glass";
+  }
+
+  let message = `I just made a **${state.drink.name}** with ${Object.keys(state.drink.ingredients).map((key) => {
+    return `${key.toUpperCase()}`
+  }).join(", ")}, served in a ${glass}!\n\nInstructions: ${state.drink.instructions}\n\nCreated using https://OVERFLOW.bar.\n${state.drink.url}`;
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(message);
+  alert("Copied to clipboard!");
+}
+
 
 setInterval(function () {
   document.getElementById("loading-text").innerHTML = LOADING_MSGS[
