@@ -28,17 +28,17 @@ async function getDrink(base_ingredient, num_extra) {
 }
 
 async function generateDrink() {
-  setInterval(function () {
-    document.getElementById("loading-text").innerHTML = LOADING_MSGS[
-      Math.floor(Math.random() * LOADING_MSGS.length)
-    ];
-  }, 1000);
-
   const drink = await getDrink(state.base_ingredient, state.num_extra);
 
   document.getElementById("drink-image").src = drink.url;
   document.getElementById("drink-name").innerHTML = drink.name;
-  document.getElementById("drink-glass").innerHTML = `Served in a ${drink.glass}`;
+  let glass = drink.glass;
+
+  if (!glass.includes("glass")) {
+    glass += " glass";
+  }
+
+  document.getElementById("drink-glass").innerHTML = `Served in a ${glass}`;
   document.getElementById("drink-ingredients").innerHTML = Object.keys(
     drink.ingredients
   ).map((key) => {
@@ -143,6 +143,12 @@ function setupScroller() {
   let el = outer.querySelector('#loop');
   el.innerHTML = el.innerHTML + el.innerHTML;
 }
+
+setInterval(function () {
+  document.getElementById("loading-text").innerHTML = LOADING_MSGS[
+    Math.floor(Math.random() * LOADING_MSGS.length)
+  ];
+}, 1000);
 
 setupScroller();
 generateButtons();
