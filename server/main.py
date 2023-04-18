@@ -18,19 +18,6 @@ app = FastAPI()
 
 graph = nx.read_gexf('ingredient_graph.gexf')
 
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import RedirectResponse
-
-class HTTPStoHTTPSRedirectMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if request.url.scheme == "http" and not request.url.port:
-            redirect_url = request.url.replace(scheme="https", port=443)
-            return RedirectResponse(url=str(redirect_url), status_code=307)
-        return await call_next(request)
-
-
-app.add_middleware(HTTPStoHTTPSRedirectMiddleware)
-
 def generate_drink_from_ingredient(ingredient_name, graph, num_ingredients=3):
     ingredients = sorted(graph[ingredient_name].items(), key=lambda x: x[1]['weight'], reverse=True)[:10]
     least_likely_ingredients = sorted(graph[ingredient_name].items(), key=lambda x: x[1]['weight'])[:10]
@@ -95,7 +82,7 @@ if __name__ == "__main__":
     # mount static files
     if "--prod" in sys.argv:
         # Production mode
-        uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info", reload=False,
+        uvicorn.run("main:app", host="0.0.0.0", port=8000, log_level="info", reload=False,
                     workers=16, ssl_keyfile=SSL_CERT_PRIVKEY, ssl_certfile=SSL_CERT_PERMKEY)
     else:
         uvicorn.run("main:app", host="127.0.0.1", port=5000,
